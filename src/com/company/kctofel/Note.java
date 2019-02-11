@@ -4,41 +4,41 @@ import java.util.HashMap;
 
 public class Note {
 
-    private int value;
+    private String value;
     private double length;
-    private HashMap<Integer, String> noteNumber;
+    private HashMap<String, Integer> noteNumber;
 
     {
-        noteNumber = new HashMap<Integer, String>();
-        noteNumber.put(0, "C");
-        noteNumber.put(1, "C#");
-        noteNumber.put(2, "D");
-        noteNumber.put(3, "D#");
-        noteNumber.put(4, "E");
-        noteNumber.put(5, "F");
-        noteNumber.put(6, "F#");
-        noteNumber.put(7, "G");
-        noteNumber.put(8, "G#");
-        noteNumber.put(9, "A");
-        noteNumber.put(10, "A#");
-        noteNumber.put(11, "B");
+        noteNumber = new HashMap<String, Integer>();
+        noteNumber.put("C", 0);
+        noteNumber.put("C#", 1);
+        noteNumber.put("D", 2);
+        noteNumber.put("D#", 3);
+        noteNumber.put("E", 4);
+        noteNumber.put("F", 5);
+        noteNumber.put("F#", 6);
+        noteNumber.put("G", 7);
+        noteNumber.put("G#", 8);
+        noteNumber.put("A", 9);
+        noteNumber.put("A#", 10);
+        noteNumber.put("B", 11);
 
     }
 
     // May need to change value from int to String to represent value and octave
     // Could be hashmap with key being the letter / value being the number
     public Note() {
-        setValue(9); // Set to A above middle C
+        setValue("E"); // Set to A above middle C
         setLength(0.25);
     }
 
-    public Note(int value, double length) {
+    public Note(String  value, double length) {
         setValue(value);
         setLength(length);
     }
 
-    public void setValue(int value) {
-        if (value >= 0) // Change this to allow for pos and neg range on keyboard
+    public void setValue(String value) {
+        //if (value >= 0) // Change this to allow for pos and neg range on keyboard
             this.value = value;
     }
 
@@ -47,7 +47,7 @@ public class Note {
             this.length = length;
     }
 
-    public String getValue(){
+    public Integer getValue(){
 
         return noteNumber.get(value);
     }
