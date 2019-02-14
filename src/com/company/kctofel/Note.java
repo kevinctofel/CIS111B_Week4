@@ -1,64 +1,190 @@
+/**
+ *
+ * Implementation of a music note class that accepts a piano note number
+ * and determines the letter value, tone, duration and frequency
+ *
+ * Kevin C. Tofel
+ * February 14, 2019
+ *
+ * https://github.com/kevinctofel/CIS111B_Week4.git
+ *
+ */
+
 package com.company.kctofel;
 
 import java.util.HashMap;
 
 public class Note {
 
-    private String value;
+    private int value;
     private double length;
-    private HashMap<String, Integer> noteNumber;
+    private int octave;
+
+    private HashMap<Integer, String> noteNumber;
 
     {
-        noteNumber = new HashMap<String, Integer>();
-        noteNumber.put("C", 0);
-        noteNumber.put("C#", 1);
-        noteNumber.put("D", 2);
-        noteNumber.put("D#", 3);
-        noteNumber.put("E", 4);
-        noteNumber.put("F", 5);
-        noteNumber.put("F#", 6);
-        noteNumber.put("G", 7);
-        noteNumber.put("G#", 8);
-        noteNumber.put("A", 9);
-        noteNumber.put("A#", 10);
-        noteNumber.put("B", 11);
+        noteNumber = new HashMap<Integer, String>();
+
+        noteNumber.put(-9, "C"); // These are values for octave 4
+        noteNumber.put(-8, "C#");
+        noteNumber.put(-7, "D");
+        noteNumber.put(-6, "D#");
+        noteNumber.put(-5, "E");
+        noteNumber.put(-4, "F");
+        noteNumber.put(-3, "F#");
+        noteNumber.put(-2, "G");
+        noteNumber.put(-1, "G#");
+        noteNumber.put(0, "A");
+        noteNumber.put(1, "A#");
+        noteNumber.put(2, "B");
 
     }
 
-    // May need to change value from int to String to represent value and octave
-    // Could be hashmap with key being the letter / value being the number
+    private HashMap<Double, String> noteDuration;
+
+    {
+        noteDuration = new HashMap<Double, String>();
+
+        noteDuration.put(1.0, "whole");
+        noteDuration.put(0.5, "half");
+        noteDuration.put(0.25, "quarter");
+        noteDuration.put(0.125, "eighth");
+        noteDuration.put(0.06125, "sixteenth");
+    }
+
+    /**
+     * Default constructor
+     */
     public Note() {
-        setValue("E"); // Set to A above middle C
-        setLength(0.25);
+        setValue(0); // Set to middle C
+        setLength(0.5);
+        setOctave();
     }
 
-    public Note(String  value, double length) {
+    /**
+     * Constructor that accepts a note number and duration
+     *
+     * @param value An integer representing the note number with A5 = 0
+     * @param length A double representing the value of beats in a measure
+     *
+     */
+    public Note(int value, double length) {
         setValue(value);
         setLength(length);
+        setOctave();
     }
 
-    public void setValue(String value) {
-        //if (value >= 0) // Change this to allow for pos and neg range on keyboard
+    /**
+     * Method to calculate the frequency of a note
+     *
+     * @param value An integer representing the note number with A5 = 0
+     * @return A double calculation of the note frequency in Hz
+     *
+     */
+    public double getFrequency(int value) {
+
+        return (Math.pow(2,(this.value / 12.0))) * 440;
+    }
+
+    /**
+     * Method to set the octave of a note based on its integer value
+     */
+    public void setOctave()
+    {
+        this.octave = 4;
+        int offset = this.value;
+        while (offset < -9 && offset <= 2) {
+            offset += 12;
+            this.octave --;
+        }
+        while (offset > 2 && offset >= -9 ) {
+            offset -= 12;
+            this.octave ++;
+        }
+    }
+
+    /**
+     * Method to get the octave of a note based on its integer value
+     * @return An int representing the note octave
+     */
+    public int getOctave() {
+        int octave = 4;
+        int offset = this.value;
+        while (offset < -9) {
+            offset += 12;
+            octave --;
+        }
+        while (offset > 2 ) {
+            offset -= 12;
+            octave ++;
+        }
+
+        return octave;
+
+    }
+
+    /**
+     * Method to set the integer value of a note
+     * @param value
+     */
+    public void setValue(int value) {
             this.value = value;
     }
 
-    public void setLength(double length) {
-        if (length >= 0.0 && length <= 1.0)
-            this.length = length;
+    /**
+     * Method to set the length of a note
+     * @param duration A double representing the duration of note in one measure
+     */
+    public void setLength(double duration) {
+            this.length = duration;
     }
 
-    public Integer getValue(){
+    /**
+     * Method to get the String name of a note
+     * @return The String note name
+     */
+    public String getName(){
+        int offset = value;
+        while (offset < -9) {
+            offset += 12;
+        }
+        while ( offset> 2 ) {
+            offset -= 12;
+            }
+        return noteNumber.get(offset);
+        }
 
-        return noteNumber.get(value);
+    /**
+     * Method to get the numeric value of a note
+      * @return An integer representing the note
+     */
+    public int getValue() {
+
+        return this.value;
     }
 
-    public double getLength(){
-        return this.length;
-
-        // METHODS to do yet:
-        // return name of note
-        // return natural or sharp
-        // return note frequency using 440 * (2^ (n/12)) formula
+    /**
+     * A method to convert the numeric note duration to a string repesentation
+     * @return The string of the note duration in one measure
+     */
+    public String getLength() {
+        return noteDuration.get(this.length);
 
     }
+
+    /**
+     * A method to determine if a note is natural or share
+     * @param note The String representation of a note
+     * @return A string for the note step
+     */
+    public String getHalfStep(String note) {
+
+        if (note.contains("#")) {
+            return "sharp";
+        } else
+            return "natural";
+
+    }
+
+
 } // end class
