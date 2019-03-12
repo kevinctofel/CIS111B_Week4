@@ -5,6 +5,7 @@
  *
  * Kevin C. Tofel
  * February 14, 2019
+ * Updated March 11, 2019
  *
  * https://github.com/kevinctofel/CIS111B_Week4.git
  *
@@ -186,6 +187,11 @@ public class Note implements Comparable<Note> {
 
     }
 
+    /**
+     * Compare method to sort notes by length and (if equal length) frequency
+     * @param other The note to compare to
+     * @return -1.0,1 depending on length/frequency value
+     */
     @Override
     public int compareTo(Note other) {
 
