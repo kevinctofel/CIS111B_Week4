@@ -14,11 +14,11 @@ package com.company.kctofel;
 
 import java.util.HashMap;
 
-public class Note {
+public class Note implements Comparable<Note> {
 
-    private int value;
-    private double length;
-    private int octave;
+    protected int value;
+    protected double length;
+    protected int octave;
 
     private HashMap<Integer, String> noteNumber;
 
@@ -46,7 +46,7 @@ public class Note {
         noteDuration = new HashMap<Double, String>();
 
         noteDuration.put(1.0, "whole");
-        noteDuration.put(0.5, "half");
+        noteDuration.put(0.50, "half");
         noteDuration.put(0.25, "quarter");
         noteDuration.put(0.125, "eighth");
         noteDuration.put(0.06125, "sixteenth");
@@ -186,5 +186,16 @@ public class Note {
 
     }
 
+    @Override
+    public int compareTo(Note other) {
+
+        int result = Double.compare(this.length, other.length);
+//
+        if (result == 0){
+            return Double.compare(this.getFrequency(value), ((other.getFrequency(other.value))));
+        }
+        else
+            return result;
+    }
 
 } // end class
